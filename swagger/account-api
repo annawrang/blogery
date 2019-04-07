@@ -24,7 +24,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Account'
         400:
-          description: 'Validation failed'
+          description: 'Validation failed, or email is already registered'
 
 components:
   schemas:

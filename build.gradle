@@ -35,6 +35,4 @@ dependencies {
     testCompile 'org.spockframework:spock-spring:1.2-groovy-2.4'
     testCompile 'org.spockframework:spock-core:1.2-groovy-2.4'
     testCompile 'org.testcontainers:testcontainers:1.10.6'
-//    testCompile 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
-
 }

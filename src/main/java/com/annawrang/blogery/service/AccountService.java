@@ -1,5 +1,6 @@
 package com.annawrang.blogery.service;
 
+import com.annawrang.blogery.config.WebSecurityConfig;
 import com.annawrang.blogery.exception.BadRequestException;
 import com.annawrang.blogery.model.Account;
 import com.annawrang.blogery.repository.AccountRepository;
@@ -20,6 +21,9 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     @Autowired
+    private WebSecurityConfig webSecurityConfig;
+
+    @Autowired
     private Validator validator;
 
     /**
@@ -37,7 +41,7 @@ public class AccountService {
         Account account = new Account()
                 .setAccountId(UUID.randomUUID())
                 .setEmail(resource.getEmail())
-                .setPassword(resource.getPassword());
+                .setPassword(webSecurityConfig.passwordEncoder().encode(resource.getPassword()));
         return convert(accountRepository.save(account));
     }
 

@@ -14,6 +14,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AccountResource {
+
     private UUID accountId;
 
     @Email
