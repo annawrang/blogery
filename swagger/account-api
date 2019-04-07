@@ -1,0 +1,52 @@
+openapi: 3.0.0
+info:
+title: Account Api
+description: Account Api handles the user accounts
+version: 1.0.0
+
+paths:
+  /accounts:
+    post:
+      summary: Create a new account
+      description: Create a new account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        201:
+          description: 'Account created'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        400:
+          description: 'Validation failed'
+
+components:
+  schemas:
+    Account:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+
+  parameters:
+    AccountID:
+      name: accountId
+      in: path
+      description: Account ID
+      required: true
+      schema:
+        type: string
+        minLength: 10

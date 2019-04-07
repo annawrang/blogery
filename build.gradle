@@ -4,6 +4,7 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'groovy'
 
 group = 'com.annawrang'
 version = '0.0.1-SNAPSHOT'
@@ -26,6 +27,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.13'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'org.springframework.security:spring-security-test'
+    testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testCompile 'org.spockframework:spock-spring:1.2-groovy-2.4'
+    testCompile 'org.spockframework:spock-core:1.2-groovy-2.4'
+    testCompile 'org.testcontainers:testcontainers:1.10.6'
+//    testCompile 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+
 }
