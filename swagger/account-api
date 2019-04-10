@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-title: Account Api
-description: Account Api handles the user accounts
-version: 1.0.0
+  title: Account Api
+  description: Account Api handles the user accounts
+  version: 1.0.0
 
 paths:
   /accounts:
@@ -25,6 +25,23 @@ paths:
                   $ref: '#/components/schemas/Account'
         400:
           description: 'Validation failed, or email is already registered'
+  /accounts/{accountId}:
+    delete:
+      summary: Delete account
+      description: Delete account
+      security:
+        - Bearer: []
+      parameters:
+        - $ref: '#/components/parameters/AccountID'
+      responses:
+        204:
+          description: 'No content - the account has been deleted'
+        401:
+          description: 'Unauthorized'
+        403:
+          description: 'Forbidden'
+        404:
+          description: 'The requested resource can not be found'
 
 components:
   schemas:
@@ -49,4 +66,4 @@ components:
       required: true
       schema:
         type: string
-        minLength: 10
+        format: UUID
