@@ -1,16 +1,14 @@
 package com.annawrang.blogery.service.account
 
-
+import com.annawrang.blogery.BaseAccountTest
 import com.annawrang.blogery.repository.AccountRepository
-import com.annawrang.blogery.resource.AccountResource
 import com.annawrang.blogery.service.AccountService
-import spock.lang.Specification
 import spock.lang.Unroll
 
 import javax.validation.ConstraintViolationException
 import javax.validation.Validation
 
-class CreateAccountTest extends Specification {
+class CreateAccountTest extends BaseAccountTest {
 
     AccountService target
 
@@ -40,12 +38,5 @@ class CreateAccountTest extends Specification {
         'anna@gmail.com' | null         | 'password is null'
         'anna@gmail.com' | 'secret1234' | 'password is missing upper case'
         'anna@gmail.com' | 'Secret1'    | 'password is too short'
-    }
-
-    def accountResource(email = 'anna@gmail.com', password = 'Secret123') {
-        new AccountResource(
-                email: email,
-                password: password
-        )
     }
 }
