@@ -1,6 +1,6 @@
-package com.annawrang.blogery.controller
+package com.annawrang.blogery.controller.account
 
-import com.annawrang.blogery.BaseAccountTest
+import com.annawrang.blogery.service.account.BaseAccountTest
 import com.annawrang.blogery.repository.AccountRepository
 import org.springframework.beans.factory.annotation.Autowired
 

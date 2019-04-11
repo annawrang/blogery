@@ -1,6 +1,6 @@
-package com.annawrang.blogery.controller
+package com.annawrang.blogery.controller.account
 
-
+import com.annawrang.blogery.controller.AccountController
 import com.annawrang.blogery.exception.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

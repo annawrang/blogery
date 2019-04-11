@@ -1,6 +1,6 @@
-package com.annawrang.blogery.controller
+package com.annawrang.blogery.controller.account
 
-
+import com.annawrang.blogery.controller.AccountController
 import com.annawrang.blogery.exception.ForbiddenException
 import com.annawrang.blogery.exception.NotFoundException
 import com.annawrang.blogery.resource.AuthTokenResource
