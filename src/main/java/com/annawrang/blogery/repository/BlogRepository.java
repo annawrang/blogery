@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface BlogRepository extends MongoRepository<Blog, UUID> {
     Optional<Blog> findByName(String name);
+
+    Optional<Blog> findByBlogId(UUID blogId);
 }
