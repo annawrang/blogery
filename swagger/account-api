@@ -25,6 +25,29 @@ paths:
                   $ref: '#/components/schemas/Account'
         400:
           description: 'Validation failed, or email is already registered'
+  /accounts/login:
+    post:
+      summary: Login
+      description: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        200:
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuthToken'
+        403:
+          description: 'Forbidden - invalid password'
+        404:
+          description: 'The account does not exist'
+
   /accounts/{accountId}:
     delete:
       summary: Delete account
@@ -57,6 +80,17 @@ components:
         password:
           type: string
           minLength: 8
+    AuthToken:
+      type: object
+      required:
+        - accountId
+        - jwtToken
+      properties:
+        accountId:
+          type: string
+          format: UUID
+        jwtToken:
+          type: string
 
   parameters:
     AccountID:
@@ -66,4 +100,4 @@ components:
       required: true
       schema:
         type: string
-        format: UUID
+        format: uuid
