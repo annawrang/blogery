@@ -46,5 +46,6 @@ class DeleteBlogIntegrationTest extends BaseBlogIntegrationTest {
         def result = target.deleteBlog(blog.blogId)
         then:
         result.statusCodeValue == 204
+        !blogRepo.findByBlogId(blog.blogId).isPresent()
     }
 }
