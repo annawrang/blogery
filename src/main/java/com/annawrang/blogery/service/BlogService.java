@@ -1,6 +1,8 @@
 package com.annawrang.blogery.service;
 
 import com.annawrang.blogery.exception.BadRequestException;
+import com.annawrang.blogery.exception.ForbiddenException;
+import com.annawrang.blogery.exception.NotFoundException;
 import com.annawrang.blogery.model.Blog;
 import com.annawrang.blogery.repository.BlogRepository;
 import com.annawrang.blogery.resource.BlogResource;
@@ -47,6 +49,18 @@ public class BlogService {
                 .setProfilePictureUrl(resource.getProfilePictureUrl());
 
         return convert(blogRepository.save(blog));
+    }
+
+    public void deleteBlog(UUID blogId) {
+        UUID currentUser = accountService.getCurrentUserId();
+
+        Blog blog = blogRepository.findByBlogId(blogId).orElseThrow(NotFoundException::new);
+
+        if(!blog.getAccountId().equals(currentUser)){
+            throw new ForbiddenException("The user does not have the rights to perform this action");
+        }
+
+        blogRepository.delete(blog);
     }
 
     private BlogResource convert(Blog blog) {
