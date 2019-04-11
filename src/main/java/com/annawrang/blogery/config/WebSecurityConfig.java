@@ -35,11 +35,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return new CustomAuthenticationManager();
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);

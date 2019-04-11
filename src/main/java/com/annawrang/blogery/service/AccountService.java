@@ -12,8 +12,6 @@ import com.annawrang.blogery.resource.AccountResource;
 import com.annawrang.blogery.resource.AuthTokenResource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
@@ -32,9 +30,6 @@ public class AccountService {
 
     @Autowired
     private WebSecurityConfig webSecurityConfig;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -66,16 +61,15 @@ public class AccountService {
                 || StringUtils.isBlank(resource.getPassword())) {
             throw new BadRequestException("Email and/or password not provided");
         }
-        Account account = accountRepository.findByEmailAndPassword(resource.getEmail(), resource.getPassword())
+        Account account = accountRepository.findByEmail(resource.getEmail())
                 .orElseThrow(NotFoundException::new);
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(resource.getEmail(), resource.getPassword()));
-            String jwtToken = jwtTokenProvider.createToken(resource.getEmail(), account);
-            return new AuthTokenResource().setJwtToken(jwtToken).setAccountId(account.getAccountId());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ForbiddenException("Invalid email/password supplied");
+
+        if(!account.getPassword().equals(resource.getPassword())){
+            throw new ForbiddenException("Invalid password");
         }
+
+        String jwtToken = jwtTokenProvider.createToken(resource.getEmail(), account);
+        return new AuthTokenResource().setJwtToken(jwtToken).setAccountId(account.getAccountId());
     }
 
     /**
@@ -94,7 +88,7 @@ public class AccountService {
     private UUID getCurrentUserId() {
         try {
             return UUID.fromString(getContext().getAuthentication().getName());
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             throw new UnauthorizedException("No user is authenticated");
         } catch (IllegalArgumentException e) {
             throw new ForbiddenException("Invalid accountId in refreshToken");
