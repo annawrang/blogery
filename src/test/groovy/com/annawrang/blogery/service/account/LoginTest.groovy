@@ -1,12 +1,11 @@
 package com.annawrang.blogery.service.account
 
-import com.annawrang.blogery.BaseAccountTest
+
 import com.annawrang.blogery.exception.BadRequestException
 import com.annawrang.blogery.repository.AccountRepository
 import com.annawrang.blogery.service.AccountService
 import spock.lang.Unroll
 
-import javax.validation.ConstraintViolationException
 import javax.validation.Validation
 
 class LoginTest extends BaseAccountTest {

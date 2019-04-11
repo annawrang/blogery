@@ -85,7 +85,7 @@ public class AccountService {
         accountRepository.delete(account);
     }
 
-    private UUID getCurrentUserId() {
+    public UUID getCurrentUserId() {
         try {
             return UUID.fromString(getContext().getAuthentication().getName());
         } catch (NullPointerException e) {

@@ -1,6 +1,6 @@
 package com.annawrang.blogery.service.account
 
-import com.annawrang.blogery.BaseAccountTest
+
 import com.annawrang.blogery.exception.ForbiddenException
 import com.annawrang.blogery.exception.UnauthorizedException
 import com.annawrang.blogery.repository.AccountRepository

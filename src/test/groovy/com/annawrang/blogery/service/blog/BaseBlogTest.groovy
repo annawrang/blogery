@@ -1,14 +1,17 @@
-package com.annawrang.blogery
+package com.annawrang.blogery.service.blog
 
-import com.annawrang.blogery.model.Account
-import com.annawrang.blogery.resource.AccountResource
+
+import com.annawrang.blogery.model.Blog
+import com.annawrang.blogery.resource.BlogResource
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.testcontainers.shaded.org.apache.http.auth.UsernamePasswordCredentials
 import spock.lang.Specification
 
-class BaseAccountTest extends Specification {
+import java.time.Instant
+
+class BaseBlogTest extends Specification {
 
     /** Inject authentication **/
     def setupAuth(UUID userId = UUID.randomUUID(), String password = 'Secret1234', accountId = random()) {
@@ -30,19 +33,26 @@ class BaseAccountTest extends Specification {
         SecurityContextHolder.setContext(securityContext)
     }
 
-    def accountResource(email = 'anna@gmail.com', password = 'Secret123') {
-        new AccountResource(
-                email: email,
-                password: password,
-                accountId: UUID.randomUUID()
+    def blogResource(name = 'blog name', description = 'description', blogId = random()) {
+        new BlogResource(
+                blogId: blogId,
+                name: name,
+                description: description,
+                createdAt: Instant.now(),
+                profilePictureUrl: 'url',
+                backgroundPictureUrl: 'url'
         )
     }
 
-    def account(email = 'anna@gmail.com', password = 'Secret1234') {
-        new Account(
-                email: email,
-                password: password,
-                accountId: UUID.randomUUID()
+    def blog(name = 'blog name', description = 'description', blogId = random(), accountId = random()) {
+        new Blog(
+                blogId: blogId,
+                name: name,
+                description: description,
+                createdAt: Instant.now(),
+                profilePictureUrl: 'url',
+                backgroundPictureUrl: 'url',
+                accountId: accountId
         )
     }
 
