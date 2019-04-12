@@ -2,6 +2,7 @@ package com.annawrang.blogery.service
 
 import com.annawrang.blogery.model.Account
 import com.annawrang.blogery.model.Blog
+import com.annawrang.blogery.model.Post
 import com.annawrang.blogery.resource.AccountResource
 import com.annawrang.blogery.resource.BlogResource
 import com.annawrang.blogery.resource.PostResource
@@ -74,10 +75,21 @@ class BaseUnitTest extends Specification {
         )
     }
 
-    def postResource(postId = random(), title = 'title'){
+    def postResource(postId = random(), title = 'title') {
         new PostResource(
                 postId: postId,
                 title: title,
+                text: 'text',
+                createdAt: Instant.now(),
+                urls: ['url.se', 'url.com']
+        )
+    }
+
+    def post(blogId = random(), postId = random()) {
+        new Post(
+                blogId: blogId,
+                postId: postId,
+                title: 'title',
                 text: 'text',
                 createdAt: Instant.now(),
                 urls: ['url.se', 'url.com']
