@@ -1,16 +1,16 @@
 package com.annawrang.blogery.controller.blog
 
+import com.annawrang.blogery.controller.BaseIntegrationTest
 import com.annawrang.blogery.controller.BlogController
 import com.annawrang.blogery.exception.ForbiddenException
 import com.annawrang.blogery.exception.NotFoundException
-import com.annawrang.blogery.exception.UnauthorizedException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 
 @SpringBootTest
 @ContextConfiguration
-class DeleteBlogIntegrationTest extends BaseBlogIntegrationTest {
+class DeleteBlogIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     BlogController target

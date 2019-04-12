@@ -1,7 +1,8 @@
-package com.annawrang.blogery.service.blog
+package com.annawrang.blogery.service
 
-
+import com.annawrang.blogery.model.Account
 import com.annawrang.blogery.model.Blog
+import com.annawrang.blogery.resource.AccountResource
 import com.annawrang.blogery.resource.BlogResource
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
@@ -11,7 +12,7 @@ import spock.lang.Specification
 
 import java.time.Instant
 
-class BaseBlogTest extends Specification {
+class BaseUnitTest extends Specification {
 
     /** Inject authentication **/
     def setupAuth(UUID userId = UUID.randomUUID(), String password = 'Secret1234', accountId = random()) {
@@ -53,6 +54,22 @@ class BaseBlogTest extends Specification {
                 profilePictureUrl: 'url',
                 backgroundPictureUrl: 'url',
                 accountId: accountId
+        )
+    }
+
+    def accountResource(email = 'anna@gmail.com', password = 'Secret123') {
+        new AccountResource(
+                email: email,
+                password: password,
+                accountId: UUID.randomUUID()
+        )
+    }
+
+    def account(email = 'anna@gmail.com', password = 'Secret1234') {
+        new Account(
+                email: email,
+                password: password,
+                accountId: UUID.randomUUID()
         )
     }
 

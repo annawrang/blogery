@@ -3,13 +3,14 @@ package com.annawrang.blogery.service.blog
 import com.annawrang.blogery.exception.UnauthorizedException
 import com.annawrang.blogery.repository.BlogRepository
 import com.annawrang.blogery.service.AccountService
+import com.annawrang.blogery.service.BaseUnitTest
 import com.annawrang.blogery.service.BlogService
 import spock.lang.Unroll
 
 import javax.validation.ConstraintViolationException
 import javax.validation.Validation
 
-class CreateBlogTest extends BaseBlogTest {
+class CreateBlogTest extends BaseUnitTest {
 
     BlogService target
 

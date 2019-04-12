@@ -1,5 +1,6 @@
 package com.annawrang.blogery.controller.blog
 
+import com.annawrang.blogery.controller.BaseIntegrationTest
 import com.annawrang.blogery.controller.BlogController
 import com.annawrang.blogery.exception.BadRequestException
 import com.annawrang.blogery.resource.BlogResource
@@ -9,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration
 
 @SpringBootTest
 @ContextConfiguration
-class CreateBlogIntegrationTest extends BaseBlogIntegrationTest {
+class CreateBlogIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     BlogController target
