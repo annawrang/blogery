@@ -4,6 +4,7 @@ import com.annawrang.blogery.model.Account
 import com.annawrang.blogery.model.Blog
 import com.annawrang.blogery.resource.AccountResource
 import com.annawrang.blogery.resource.BlogResource
+import com.annawrang.blogery.resource.PostResource
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
@@ -70,6 +71,16 @@ class BaseUnitTest extends Specification {
                 email: email,
                 password: password,
                 accountId: UUID.randomUUID()
+        )
+    }
+
+    def postResource(postId = random(), title = 'title'){
+        new PostResource(
+                postId: postId,
+                title: title,
+                text: 'text',
+                createdAt: Instant.now(),
+                urls: ['url.se', 'url.com']
         )
     }
 
