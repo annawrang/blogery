@@ -2,11 +2,13 @@ package com.annawrang.blogery.controller;
 
 import com.annawrang.blogery.resource.AccountResource;
 import com.annawrang.blogery.resource.AuthTokenResource;
+import com.annawrang.blogery.resource.BlogResource;
 import com.annawrang.blogery.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -31,5 +33,10 @@ public class AccountController {
     public ResponseEntity deleteAccount(@PathVariable("accountId") final UUID accountId) {
         accountService.deleteAccount(accountId);
         return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity getBlogsForAccount(@PathVariable("accountId") final UUID accountId) {
+        List<BlogResource> blogs = accountService.getBlogs(accountId);
+        return ResponseEntity.ok(blogs);
     }
 }

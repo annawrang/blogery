@@ -1,6 +1,7 @@
 package com.annawrang.blogery.controller.account
 
 import com.annawrang.blogery.controller.AccountController
+import com.annawrang.blogery.controller.BaseIntegrationTest
 import com.annawrang.blogery.exception.ForbiddenException
 import com.annawrang.blogery.exception.NotFoundException
 import com.annawrang.blogery.resource.AuthTokenResource
@@ -10,7 +11,7 @@ import org.springframework.test.context.ContextConfiguration
 
 @SpringBootTest
 @ContextConfiguration
-class LoginControllerIntegrationTest extends BaseAccountIntegrationTest {
+class LoginControllerIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     AccountController target

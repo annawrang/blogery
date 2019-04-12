@@ -1,6 +1,7 @@
 package com.annawrang.blogery.controller.account
 
 import com.annawrang.blogery.controller.AccountController
+import com.annawrang.blogery.controller.BaseIntegrationTest
 import com.annawrang.blogery.exception.BadRequestException
 import com.annawrang.blogery.resource.AccountResource
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration
 
 @SpringBootTest
 @ContextConfiguration
-class CreateAccountControllerIntegrationTest extends BaseAccountIntegrationTest {
+class CreateAccountControllerIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     AccountController target

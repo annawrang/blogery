@@ -3,11 +3,12 @@ package com.annawrang.blogery.service.blog
 import com.annawrang.blogery.exception.UnauthorizedException
 import com.annawrang.blogery.repository.BlogRepository
 import com.annawrang.blogery.service.AccountService
+import com.annawrang.blogery.service.BaseUnitTest
 import com.annawrang.blogery.service.BlogService
 
 import javax.validation.Validation
 
-class DeleteBlogTest extends BaseBlogTest {
+class DeleteBlogTest extends BaseUnitTest {
 
     BlogService target
 

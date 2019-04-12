@@ -1,47 +1,48 @@
 package com.annawrang.blogery.service.account
 
-
 import com.annawrang.blogery.exception.ForbiddenException
 import com.annawrang.blogery.exception.UnauthorizedException
 import com.annawrang.blogery.repository.AccountRepository
+import com.annawrang.blogery.repository.BlogRepository
 import com.annawrang.blogery.service.AccountService
 import com.annawrang.blogery.service.BaseUnitTest
 
 import javax.validation.Validation
 
-class DeleteAccountTest extends BaseUnitTest {
+class GetBlogsForAccountTest extends BaseUnitTest {
 
     AccountService target
 
     AccountRepository accountRepository
 
+    BlogRepository blogRepository
+
     def setup() {
         accountRepository = Mock(AccountRepository)
+        blogRepository = Mock(BlogRepository)
         target = new AccountService(
                 accountRepository: accountRepository,
+                blogRepository: blogRepository,
                 validator: Validation.buildDefaultValidatorFactory().getValidator()
         )
     }
 
-    def 'an exception is thrown if the user is not authorized'() {
+    def 'an exception should be thrown if no user is authenticated'() {
         given:
         setupNoAuth()
         when:
-        target.deleteAccount(random())
+        target.getBlogs(random())
         then:
         thrown(UnauthorizedException)
     }
 
-    def 'an exception is thrown if the user authenticated does not match the provided accountId'() {
+    def 'an exception should be thrown if the authenticated user does not match accountId provided'() {
         given:
         setupAuth()
-        and:
-        def account = account()
         when:
-        target.deleteAccount(random())
+        target.getBlogs(random())
         then:
-        1 * accountRepository.findByAccountId(_ as UUID) >> Optional.of(account)
-        and:
         thrown(ForbiddenException)
     }
+
 }

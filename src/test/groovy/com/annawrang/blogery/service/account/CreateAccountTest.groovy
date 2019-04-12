@@ -3,12 +3,13 @@ package com.annawrang.blogery.service.account
 
 import com.annawrang.blogery.repository.AccountRepository
 import com.annawrang.blogery.service.AccountService
+import com.annawrang.blogery.service.BaseUnitTest
 import spock.lang.Unroll
 
 import javax.validation.ConstraintViolationException
 import javax.validation.Validation
 
-class CreateAccountTest extends BaseAccountTest {
+class CreateAccountTest extends BaseUnitTest {
 
     AccountService target
 
