@@ -41,7 +41,7 @@ public class BlogService {
 
         UUID currentUser = accountService.getCurrentUserId();
 
-        if(blogRepository.findByName(resource.getName()).isPresent()){
+        if (blogRepository.findByName(resource.getName()).isPresent()) {
             throw new BadRequestException("The blog name is already taken");
         }
 
@@ -62,7 +62,7 @@ public class BlogService {
 
         Blog blog = blogRepository.findByBlogId(blogId).orElseThrow(NotFoundException::new);
 
-        if(!blog.getAccountId().equals(currentUser)){
+        if (!blog.getAccountId().equals(currentUser)) {
             throw new ForbiddenException("The user does not have the rights to perform this action");
         }
 
@@ -86,8 +86,18 @@ public class BlogService {
         return convert(postRepository.save(post));
     }
 
+
+    public void deletePost(UUID blogId, UUID postId) {
+        UUID currentUser = accountService.getCurrentUserId();
+        Blog blog = blogRepository.findByBlogId(blogId).orElseThrow(NotFoundException::new);
+        validateBlogOwner(currentUser, blog.getAccountId());
+
+        Post post = postRepository.findByBlogIdAndPostId(blogId, postId).orElseThrow(NotFoundException::new);
+        postRepository.delete(post);
+    }
+
     private void validateBlogOwner(UUID currentUser, UUID accountId) {
-        if(!currentUser.equals(accountId)){
+        if (!currentUser.equals(accountId)) {
             throw new ForbiddenException("The user does not own the blog");
         }
     }

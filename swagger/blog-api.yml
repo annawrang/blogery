@@ -72,6 +72,25 @@ paths:
         404:
           description: 'The requested resource can not be found'
 
+  /blogs/{blogId}/posts/{postId}:
+    delete:
+      summary: Delete a blog post
+      description: Delete a blog post
+      security:
+        - Bearer: []
+      parameters:
+        - $ref: '#/components/parameters/BlogID'
+        - $ref: '#/components/parameters/PostID'
+      responses:
+        204:
+          description: 'No content - the post has been deleted'
+        401:
+          description: 'Unauthorized'
+        403:
+          description: 'Forbidden'
+        404:
+          description: 'The requested resource can not be found'
+
 components:
   schemas:
     Blog:
@@ -120,6 +139,15 @@ components:
       name: blogId
       in: path
       description: Blog ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    PostID:
+      name: postId
+      in: path
+      description: Post ID
       required: true
       schema:
         type: string
