@@ -2,6 +2,7 @@ package com.annawrang.blogery.controller;
 
 import com.annawrang.blogery.resource.AccountResource;
 import com.annawrang.blogery.resource.BlogResource;
+import com.annawrang.blogery.resource.PostResource;
 import com.annawrang.blogery.service.AccountService;
 import com.annawrang.blogery.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,12 @@ public class BlogController {
     public ResponseEntity deleteBlog(@PathVariable final UUID blogId) {
         blogService.deleteBlog(blogId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping(path = "/{blogId}/posts")
+    public ResponseEntity createBlogPost(@PathVariable final UUID blogId,
+                                         @RequestBody final PostResource resource) {
+        PostResource savedPost = blogService.createBlogPost(blogId, resource);
+        return ResponseEntity.status(201).body(savedPost);
     }
 }
