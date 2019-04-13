@@ -1,5 +1,6 @@
 package com.annawrang.blogery.service.blog
 
+import com.annawrang.blogery.exception.NotFoundException
 import com.annawrang.blogery.exception.UnauthorizedException
 import com.annawrang.blogery.repository.BlogRepository
 import com.annawrang.blogery.repository.PostRepository
@@ -9,7 +10,7 @@ import com.annawrang.blogery.service.BlogService
 
 import javax.validation.Validation
 
-class DeleteBlogPostTest extends BaseUnitTest{
+class GetBlogPostTest extends BaseUnitTest {
     BlogService target
 
     BlogRepository blogRepository
@@ -30,14 +31,14 @@ class DeleteBlogPostTest extends BaseUnitTest{
         )
     }
 
-    def 'an exception should be thrown if no user is authenticated'() {
+    def 'an exception should be thrown if the post does not exist'() {
         given:
         setupNoAuth()
         when:
-        target.deletePost(random(), random())
+        target.getPost(random(), random())
         then:
-        1 * accountService.getCurrentUserId() >> { throw new UnauthorizedException() }
+        1 * postRepository.findByBlogIdAndPostId(_ as UUID, _ as UUID) >> Optional.empty()
         0 * _
-        thrown(UnauthorizedException)
+        thrown(NotFoundException)
     }
 }
