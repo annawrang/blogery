@@ -86,6 +86,11 @@ public class BlogService {
         return convert(postRepository.save(post));
     }
 
+    public PostResource getPost(UUID blogId, UUID postId) {
+        Post post = postRepository.findByBlogIdAndPostId(blogId, postId).orElseThrow(NotFoundException::new);
+
+        return convert(post);
+    }
 
     public void deletePost(UUID blogId, UUID postId) {
         UUID currentUser = accountService.getCurrentUserId();

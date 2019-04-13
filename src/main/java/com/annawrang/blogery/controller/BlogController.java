@@ -44,4 +44,11 @@ public class BlogController {
         blogService.deletePost(blogId, postId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping(path = "/{blogId}/posts/{postId}")
+    public ResponseEntity getPost(@PathVariable final UUID blogId,
+                                         @PathVariable final UUID postId) {
+        PostResource post = blogService.getPost(blogId, postId);
+        return ResponseEntity.ok(post);
+    }
 }

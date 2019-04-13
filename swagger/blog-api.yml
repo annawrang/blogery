@@ -73,6 +73,22 @@ paths:
           description: 'The requested resource can not be found'
 
   /blogs/{blogId}/posts/{postId}:
+    get:
+      summary: Get a blog post
+      description: Get a blog post
+      parameters:
+        - $ref: '#/components/parameters/BlogID'
+        - $ref: '#/components/parameters/PostID'
+      responses:
+        200:
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Post'
+        404:
+          description: 'The requested resource can not be found'
     delete:
       summary: Delete a blog post
       description: Delete a blog post
