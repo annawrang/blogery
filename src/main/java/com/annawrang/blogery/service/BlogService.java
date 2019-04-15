@@ -92,6 +92,20 @@ public class BlogService {
         return convert(post);
     }
 
+    public PostResource editPost(UUID blogId, UUID postId, PostResource resource) {
+        UUID currentUser = accountService.getCurrentUserId();
+        validateResource(resource, "title");
+        Blog blog = blogRepository.findByBlogId(blogId).orElseThrow(NotFoundException::new);
+        validateBlogOwner(currentUser, blog.getAccountId());
+
+        Post post = postRepository.findByBlogIdAndPostId(blogId, postId).orElseThrow(NotFoundException::new);
+
+        post.setText(resource.getText())
+                .setTitle(resource.getTitle())
+                .setUrls(resource.getUrls());
+        return convert(postRepository.save(post));
+    }
+
     public void deletePost(UUID blogId, UUID postId) {
         UUID currentUser = accountService.getCurrentUserId();
         Blog blog = blogRepository.findByBlogId(blogId).orElseThrow(NotFoundException::new);

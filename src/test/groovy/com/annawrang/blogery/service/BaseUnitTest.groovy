@@ -75,13 +75,13 @@ class BaseUnitTest extends Specification {
         )
     }
 
-    def postResource(postId = random(), title = 'title') {
+    def postResource(postId = random(), title = 'title', text = 'text', urls = ['url.se', 'url.com']) {
         new PostResource(
                 postId: postId,
                 title: title,
-                text: 'text',
+                text: text,
                 createdAt: Instant.now(),
-                urls: ['url.se', 'url.com']
+                urls: urls
         )
     }
 
