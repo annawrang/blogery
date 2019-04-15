@@ -7,6 +7,7 @@ import com.annawrang.blogery.exception.NotFoundException
 import com.annawrang.blogery.resource.AuthTokenResource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.test.context.ContextConfiguration
 
 @SpringBootTest
@@ -15,6 +16,9 @@ class LoginControllerIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     AccountController target
+
+    @Autowired
+    BCryptPasswordEncoder encoder
 
     def 'login should throw exception if account does not exist'() {
         given:
@@ -39,9 +43,9 @@ class LoginControllerIntegrationTest extends BaseIntegrationTest {
 
     def 'login should return a jwt token and the accountId'() {
         given:
-        def resource = accountResource('anna@gmail.com', 'Secret123')
+        def resource = accountResource('test@gmail.com', 'Secret123')
         and: 'an account exists with that email'
-        def account = account('anna@gmail.com', 'Secret123')
+        def account = account('test@gmail.com', encoder.encode('Secret123'))
         accountRepo.save(account)
         when:
         def result = target.login(resource)

@@ -10,14 +10,19 @@ import com.annawrang.blogery.repository.PostRepository;
 import com.annawrang.blogery.resource.BlogResource;
 import com.annawrang.blogery.resource.PostResource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class BlogService {
@@ -113,6 +118,15 @@ public class BlogService {
 
         Post post = postRepository.findByBlogIdAndPostId(blogId, postId).orElseThrow(NotFoundException::new);
         postRepository.delete(post);
+    }
+
+    public PagedResources<PostResource> getPosts(UUID blogId, Pageable pageable) {
+        Page<Post> posts = postRepository.findAllByBlogId(blogId, pageable);
+
+        List<PostResource> resources = posts.stream().map(this::convert).collect(Collectors.toList());
+
+        return new PagedResources<>(resources, new PagedResources.PageMetadata(
+                pageable.getPageSize(), pageable.getPageNumber(), posts.getTotalElements()));
     }
 
     private void validateBlogOwner(UUID currentUser, UUID accountId) {

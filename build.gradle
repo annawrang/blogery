@@ -27,8 +27,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.apache.commons:commons-lang3:3.8.1'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-
-
+	implementation 'org.springframework.hateoas:spring-hateoas:0.25.1.RELEASE'
+	
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 

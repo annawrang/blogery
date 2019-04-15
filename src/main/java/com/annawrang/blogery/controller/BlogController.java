@@ -6,6 +6,9 @@ import com.annawrang.blogery.resource.PostResource;
 import com.annawrang.blogery.service.AccountService;
 import com.annawrang.blogery.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +60,13 @@ public class BlogController {
                                          @PathVariable final UUID postId,
                                    @RequestBody final PostResource resource) {
         PostResource post = blogService.editPost(blogId, postId, resource);
+        return ResponseEntity.ok(post);
+    }
+
+    @GetMapping(path = "/{blogId}/posts")
+    public ResponseEntity getAllPosts(@PathVariable final UUID blogId,
+                                      Pageable pageable) {
+        PagedResources<PostResource> post = blogService.getPosts(blogId, pageable);
         return ResponseEntity.ok(post);
     }
 }
