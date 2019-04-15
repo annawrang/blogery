@@ -45,6 +45,21 @@ class EditBlogPostIntegrationTest extends BaseIntegrationTest {
         thrown(ForbiddenException)
     }
 
+    def 'an exception should be thrown if the post does not exist'() {
+        given:
+        def userId = random()
+        def blog = blog('blog', 'description', random(), userId)
+        blogRepo.save(blog)
+        and:
+        def resource = postResource(random(), 'new title', 'new text', ['new url'])
+        and:
+        setupAuth(userId)
+        when:
+        target.editPost(blog.blogId, random(), resource)
+        then:
+        thrown(NotFoundException)
+    }
+
     def 'the post should be returned'() {
         given:
         def userId = random()
