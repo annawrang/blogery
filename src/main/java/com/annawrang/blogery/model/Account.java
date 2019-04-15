@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ public class Account {
     @Id
     private UUID accountId = UUID.randomUUID();
 
-    @UniqueElements
+    @Indexed(unique = true)
     private String email;
 
     private String password;

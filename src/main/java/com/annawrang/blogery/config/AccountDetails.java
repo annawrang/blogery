@@ -22,10 +22,6 @@ public class AccountDetails implements UserDetailsService {
     @Autowired
     private AccountRepository accountRepository;
 
-//    public Account getAccountByEmail(String email) {
-//        return accountRepository.findByEmail(email).orElseThrow(NotFoundException::new);
-//    }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(email)
