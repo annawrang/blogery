@@ -4,7 +4,6 @@ import com.annawrang.blogery.controller.BaseIntegrationTest
 import com.annawrang.blogery.controller.BlogController
 import com.annawrang.blogery.exception.ForbiddenException
 import com.annawrang.blogery.exception.NotFoundException
-import com.annawrang.blogery.resource.PostResource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration

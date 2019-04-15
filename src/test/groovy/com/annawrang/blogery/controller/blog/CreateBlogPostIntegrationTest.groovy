@@ -19,7 +19,8 @@ class CreateBlogPostIntegrationTest extends BaseIntegrationTest {
     def 'an exception should be thrown if the blog does not exist'() {
         given:
         setupAuth()
-        and: def resource = postResource()
+        and:
+        def resource = postResource()
         when:
         target.createBlogPost(random(), resource)
         then:

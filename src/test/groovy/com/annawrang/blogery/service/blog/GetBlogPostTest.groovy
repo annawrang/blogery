@@ -1,7 +1,6 @@
 package com.annawrang.blogery.service.blog
 
 import com.annawrang.blogery.exception.NotFoundException
-import com.annawrang.blogery.exception.UnauthorizedException
 import com.annawrang.blogery.repository.BlogRepository
 import com.annawrang.blogery.repository.PostRepository
 import com.annawrang.blogery.service.AccountService

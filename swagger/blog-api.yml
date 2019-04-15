@@ -49,6 +49,22 @@ paths:
           description: 'The requested resource can not be found'
 
   /blogs/{blogId}/posts:
+    get:
+      summary: Get blog posts
+      description: Get all blog posts for blog
+      parameters:
+        - $ref: '#/components/parameters/BlogID'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        200:
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
     post:
       summary: Create a blog post
       description: Create a blog post
@@ -192,3 +208,19 @@ components:
       schema:
         type: string
         format: uuid
+
+    Size:
+      name: size
+      in: query
+      description: size
+      required: false
+      schema:
+        type: number
+
+    Page:
+      name: page
+      in: query
+      description: page
+      required: false
+      schema:
+        type: number

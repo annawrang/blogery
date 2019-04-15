@@ -15,6 +15,8 @@ import com.annawrang.blogery.resource.AuthTokenResource;
 import com.annawrang.blogery.resource.BlogResource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
@@ -40,6 +42,9 @@ public class AccountService {
     private WebSecurityConfig webSecurityConfig;
 
     @Autowired
+    private BCryptPasswordEncoder encoder;
+
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
@@ -60,7 +65,7 @@ public class AccountService {
         Account account = new Account()
                 .setAccountId(UUID.randomUUID())
                 .setEmail(resource.getEmail())
-                .setPassword(webSecurityConfig.passwordEncoder().encode(resource.getPassword()));
+                .setPassword(encoder.encode(resource.getPassword()));
         return convert(accountRepository.save(account));
     }
 
@@ -72,7 +77,7 @@ public class AccountService {
         Account account = accountRepository.findByEmail(resource.getEmail())
                 .orElseThrow(NotFoundException::new);
 
-        if (!account.getPassword().equals(resource.getPassword())) {
+        if(!encoder.matches(resource.getPassword(), account.getPassword())){
             throw new ForbiddenException("Invalid password");
         }
 
