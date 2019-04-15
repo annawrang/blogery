@@ -51,4 +51,12 @@ public class BlogController {
         PostResource post = blogService.getPost(blogId, postId);
         return ResponseEntity.ok(post);
     }
+
+    @PutMapping(path = "/{blogId}/posts/{postId}")
+    public ResponseEntity editPost(@PathVariable final UUID blogId,
+                                         @PathVariable final UUID postId,
+                                   @RequestBody final PostResource resource) {
+        PostResource post = blogService.editPost(blogId, postId, resource);
+        return ResponseEntity.ok(post);
+    }
 }
