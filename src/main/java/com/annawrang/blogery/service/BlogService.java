@@ -146,6 +146,18 @@ public class BlogService {
         return convert(comment);
     }
 
+    public void deleteComment(UUID blogId, UUID postId, UUID commentId) {
+        UUID currentUser = accountService.getCurrentUserId();
+        Blog blog = blogRepository.findByBlogId(blogId).orElseThrow(NotFoundException::new);
+        validateBlogOwner(currentUser, blog.getAccountId());
+
+        Post post = postRepository.findByBlogIdAndPostId(blogId, postId).orElseThrow(NotFoundException::new);
+        Comment comment = post.getComments().stream()
+                .filter(c -> c.getCommentId().equals(commentId)).findAny().orElseThrow(NotFoundException::new);
+        post.getComments().remove(comment);
+        postRepository.save(post);
+    }
+
     private void validateBlogOwner(UUID currentUser, UUID accountId) {
         if (!currentUser.equals(accountId)) {
             throw new ForbiddenException("The user does not own the blog");

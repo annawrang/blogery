@@ -72,6 +72,14 @@ public class BlogController {
         return ResponseEntity.ok(comment);
     }
 
+    @DeleteMapping(path = "/{blogId}/posts/{postId}/comments/{commentId}")
+    public ResponseEntity deleteComment(@PathVariable final UUID blogId,
+                                         @PathVariable final UUID postId,
+                                        @PathVariable final UUID commentId) {
+        blogService.deleteComment(blogId, postId, commentId);
+        return ResponseEntity.status(204).build();
+    }
+
     @GetMapping(path = "/{blogId}/posts")
     public ResponseEntity getAllPosts(@PathVariable final UUID blogId,
                                       Pageable pageable) {
