@@ -2,6 +2,7 @@ package com.annawrang.blogery.controller;
 
 import com.annawrang.blogery.resource.AccountResource;
 import com.annawrang.blogery.resource.BlogResource;
+import com.annawrang.blogery.resource.CommentResource;
 import com.annawrang.blogery.resource.PostResource;
 import com.annawrang.blogery.service.AccountService;
 import com.annawrang.blogery.service.BlogService;
@@ -61,6 +62,14 @@ public class BlogController {
                                    @RequestBody final PostResource resource) {
         PostResource post = blogService.editPost(blogId, postId, resource);
         return ResponseEntity.ok(post);
+    }
+
+    @PostMapping(path = "/{blogId}/posts/{postId}/comments")
+    public ResponseEntity postComment(@PathVariable final UUID blogId,
+                                         @PathVariable final UUID postId,
+                                   @RequestBody final CommentResource resource) {
+        CommentResource comment = blogService.createComment(blogId, postId, resource);
+        return ResponseEntity.ok(comment);
     }
 
     @GetMapping(path = "/{blogId}/posts")
