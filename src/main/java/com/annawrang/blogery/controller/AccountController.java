@@ -24,6 +24,14 @@ public class AccountController {
         return ResponseEntity.status(201).body(createdAccount);
     }
 
+
+    @PutMapping(path = "/{accountId}")
+    public ResponseEntity editAccount(@PathVariable("accountId") final UUID accountId,
+                                      @RequestBody final AccountResource resource) {
+        AccountResource account = accountService.editAccount(accountId, resource);
+        return ResponseEntity.ok(account);
+    }
+
     @PostMapping(path = "/login")
     public ResponseEntity login(@RequestBody final AccountResource resource) {
         AuthTokenResource authTokens = accountService.login(resource);

@@ -69,6 +69,20 @@ public class AccountService {
         return convert(accountRepository.save(account));
     }
 
+    public AccountResource editAccount(UUID accountId, AccountResource resource) {
+        validateResource(resource, "email");
+        validateResource(resource, "password");
+
+        Account account = accountRepository.findByAccountId(accountId)
+                .orElseThrow(NotFoundException::new);
+
+        validateCurrentUser(getCurrentUserId(), account.getAccountId());
+
+        account.setEmail(resource.getEmail())
+                .setPassword(encoder.encode(resource.getPassword()));
+        return convert(accountRepository.save(account));
+    }
+
     public AuthTokenResource login(final AccountResource resource) {
         if (resource == null || StringUtils.isBlank(resource.getEmail())
                 || StringUtils.isBlank(resource.getPassword())) {
