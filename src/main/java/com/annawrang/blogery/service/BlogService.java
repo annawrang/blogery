@@ -4,10 +4,12 @@ import com.annawrang.blogery.exception.BadRequestException;
 import com.annawrang.blogery.exception.ForbiddenException;
 import com.annawrang.blogery.exception.NotFoundException;
 import com.annawrang.blogery.model.Blog;
+import com.annawrang.blogery.model.Comment;
 import com.annawrang.blogery.model.Post;
 import com.annawrang.blogery.repository.BlogRepository;
 import com.annawrang.blogery.repository.PostRepository;
 import com.annawrang.blogery.resource.BlogResource;
+import com.annawrang.blogery.resource.CommentResource;
 import com.annawrang.blogery.resource.PostResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -86,6 +89,7 @@ public class BlogService {
                 .setCreatedAt(Instant.now())
                 .setText(resource.getText())
                 .setTitle(resource.getTitle())
+                .setComments(new ArrayList<>())
                 .setUrls(resource.getUrls());
 
         return convert(postRepository.save(post));
@@ -129,6 +133,19 @@ public class BlogService {
                 pageable.getPageSize(), pageable.getPageNumber(), posts.getTotalElements()));
     }
 
+    public CommentResource createComment(UUID blogId, UUID postId, CommentResource resource) {
+        validateResource(resource, "text");
+        Post post = postRepository.findByBlogIdAndPostId(blogId, postId).orElseThrow(NotFoundException::new);
+
+        Comment comment = new Comment()
+                .setCommentId(UUID.randomUUID())
+                .setCreatedAt(Instant.now())
+                .setText(resource.getText())
+                .setCreatedBy(resource.getCreatedBy() == null ? "Anonymous" : resource.getCreatedBy());
+        postRepository.save(post.addComment(comment));
+        return convert(comment);
+    }
+
     private void validateBlogOwner(UUID currentUser, UUID accountId) {
         if (!currentUser.equals(accountId)) {
             throw new ForbiddenException("The user does not own the blog");
@@ -151,7 +168,16 @@ public class BlogService {
                 .setPostId(post.getPostId())
                 .setText(post.getText())
                 .setTitle(post.getTitle())
-                .setUrls(post.getUrls());
+                .setUrls(post.getUrls())
+                .setComments(post.getComments().stream().map(this::convert).collect(Collectors.toList()));
+    }
+
+    private CommentResource convert(Comment comment) {
+        return new CommentResource()
+                .setCommentId(comment.getCommentId())
+                .setCreatedAt(comment.getCreatedAt())
+                .setText(comment.getText())
+                .setCreatedBy(comment.getCreatedBy());
     }
 
     private void validateResource(final BlogResource resource, final String property) {
@@ -163,6 +189,13 @@ public class BlogService {
 
     private void validateResource(final PostResource resource, final String property) {
         final Set<ConstraintViolation<PostResource>> violations = validator.validateProperty(resource, property);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+    }
+
+    private void validateResource(final CommentResource resource, final String property) {
+        final Set<ConstraintViolation<CommentResource>> violations = validator.validateProperty(resource, property);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }

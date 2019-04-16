@@ -147,6 +147,29 @@ paths:
         404:
           description: 'The requested resource can not be found'
 
+  /blogs/{blogId}/posts/{postId}/comments:
+    post:
+      summary: Comment on a post
+      description: Comment on a post
+      parameters:
+        - $ref: '#/components/parameters/BlogID'
+        - $ref: '#/components/parameters/PostID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        201:
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        404:
+          description: 'The requested resource can not be found'
+
+
 components:
   schemas:
     Blog:
@@ -189,6 +212,21 @@ components:
           type: array
           items:
             type: string
+    Comment:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        commentId:
+          type: string
+          format: uuid
 
   parameters:
     BlogID:

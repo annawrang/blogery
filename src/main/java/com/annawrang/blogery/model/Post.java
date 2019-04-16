@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,5 +25,15 @@ public class Post {
     private String text;
 
     private List<String> urls;
+
+    private List<Comment> comments;
+
+    public Post addComment(final Comment comment){
+        if(comments == null){
+            comments = new ArrayList<>();
+        }
+        comments.add(comment);
+        return this;
+    }
 }
 

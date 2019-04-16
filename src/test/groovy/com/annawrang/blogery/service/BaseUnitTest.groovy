@@ -2,9 +2,11 @@ package com.annawrang.blogery.service
 
 import com.annawrang.blogery.model.Account
 import com.annawrang.blogery.model.Blog
+import com.annawrang.blogery.model.Comment
 import com.annawrang.blogery.model.Post
 import com.annawrang.blogery.resource.AccountResource
 import com.annawrang.blogery.resource.BlogResource
+import com.annawrang.blogery.resource.CommentResource
 import com.annawrang.blogery.resource.PostResource
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
@@ -81,7 +83,8 @@ class BaseUnitTest extends Specification {
                 title: title,
                 text: text,
                 createdAt: Instant.now(),
-                urls: urls
+                urls: urls,
+                comments: []
         )
     }
 
@@ -92,7 +95,26 @@ class BaseUnitTest extends Specification {
                 title: 'title',
                 text: 'text',
                 createdAt: Instant.now(),
-                urls: ['url.se', 'url.com']
+                urls: ['url.se', 'url.com'],
+                comments: []
+        )
+    }
+
+    def commentResource(commentId = random(), text = 'text', createdBy = 'Anna') {
+        new CommentResource(
+                text: text,
+                createdAt: Instant.now(),
+                createdBy: createdBy,
+                commentId: commentId
+        )
+    }
+
+    def comment(commentId = random(), text = 'text', createdBy = 'Anna') {
+        new Comment(
+                text: text,
+                createdAt: Instant.now(),
+                createdBy: createdBy,
+                commentId: commentId
         )
     }
 

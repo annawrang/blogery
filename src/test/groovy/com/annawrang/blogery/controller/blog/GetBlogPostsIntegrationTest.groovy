@@ -45,8 +45,8 @@ class GetBlogPostsIntegrationTest extends BaseIntegrationTest {
         def post1 = post(blog.blogId, random())
         def post2 = post(blog.blogId, random())
         def post3 = post(blog.blogId, random())
-        postRepo.save(post1)
-        postRepo.save(post2)
+        postRepo.save(post1.addComment(comment()))
+        postRepo.save(post2.addComment(comment()))
         postRepo.save(post3)
         when:
         def result = target.getAllPosts(blog.blogId, pageable)
@@ -58,5 +58,6 @@ class GetBlogPostsIntegrationTest extends BaseIntegrationTest {
         body.metadata.totalElements == 3
         body.metadata.totalPages == 2
         body.content.size() == 2
+        body.content.comments.size() == 2
     }
 }

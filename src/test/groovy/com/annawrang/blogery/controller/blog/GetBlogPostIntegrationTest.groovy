@@ -31,7 +31,8 @@ class GetBlogPostIntegrationTest extends BaseIntegrationTest {
         and:
         def postId = random()
         def post = post(blog.blogId, postId)
-        postRepo.save(post)
+        def comment = comment()
+        postRepo.save(post.addComment(comment))
         when:
         def result = target.getPost(blog.blogId, postId)
         then:
@@ -41,5 +42,6 @@ class GetBlogPostIntegrationTest extends BaseIntegrationTest {
         body.urls == post.urls
         body.title == post.title
         body.text == post.text
+        body.comments.size() == 1
     }
 }

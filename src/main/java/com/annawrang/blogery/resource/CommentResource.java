@@ -5,23 +5,18 @@ import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @Data
 @Accessors(chain = true)
-public class PostResource {
+public class CommentResource {
 
-    private UUID postId;
-
-    private Instant createdAt;
+    private UUID commentId;
 
     @NotBlank
-    private String title;
-
     private String text;
 
-    private List<String> urls;
+    private String createdBy;
 
-    private List<CommentResource> comments;
+    private Instant createdAt;
 }
