@@ -38,11 +38,14 @@ public class AccountController {
         return ResponseEntity.ok(authTokens);
     }
 
+//  TODO test last
+    @DeleteMapping(value = "/{accountId}")
     public ResponseEntity deleteAccount(@PathVariable("accountId") final UUID accountId) {
         accountService.deleteAccount(accountId);
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping(value = "/{accountId}/blogs")
     public ResponseEntity getBlogsForAccount(@PathVariable("accountId") final UUID accountId) {
         List<BlogResource> blogs = accountService.getBlogs(accountId);
         return ResponseEntity.ok(blogs);
