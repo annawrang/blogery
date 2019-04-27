@@ -134,7 +134,7 @@ public class BlogService {
     }
 
     public String uploadContent(final MultipartFile file) {
-//        accountService.getCurrentUserId();
+        accountService.getCurrentUserId();
         return amazonClient.uploadFile(file);
     }
 
@@ -161,6 +161,14 @@ public class BlogService {
                 .filter(c -> c.getCommentId().equals(commentId)).findAny().orElseThrow(NotFoundException::new);
         post.getComments().remove(comment);
         postRepository.save(post);
+    }
+
+    public void deleteBlogsByAccount(UUID accountId) {
+        List<Blog> blogs = blogRepository.findByAccountId(accountId);
+        blogs.forEach(b -> {
+            postRepository.deleteAllByBlogId(b.getBlogId());
+            deleteBlog(b.getBlogId());
+        });
     }
 
     private void validateBlogOwner(UUID currentUser, UUID accountId) {
@@ -216,13 +224,5 @@ public class BlogService {
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
-    }
-
-    public void deleteBlogsByAccount(UUID accountId) {
-        List<Blog> blogs = blogRepository.findByAccountId(accountId);
-        blogs.forEach(b -> {
-            postRepository.deleteAllByBlogId(b.getBlogId());
-            deleteBlog(b.getBlogId());
-        });
     }
 }

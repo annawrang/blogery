@@ -38,7 +38,7 @@ public class AccountController {
         return ResponseEntity.ok(authTokens);
     }
 
-    // TESTA SIST ! ----------------------------------------------------
+//  TODO test last
     @DeleteMapping(value = "/{accountId}")
     public ResponseEntity deleteAccount(@PathVariable("accountId") final UUID accountId) {
         accountService.deleteAccount(accountId);
