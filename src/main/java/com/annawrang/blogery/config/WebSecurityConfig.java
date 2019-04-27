@@ -37,6 +37,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // NÖDVÄNDIGT ???
                 .antMatchers(HttpMethod.POST, "/accounts/login").permitAll()
 
+                .antMatchers(HttpMethod.GET, "/blogs/{blogId}/posts").permitAll()
+                .antMatchers(HttpMethod.GET, "/blogs/{blogId}/posts/{postId}").permitAll()
+
+                .antMatchers(HttpMethod.POST, "/blogs/{blogId}/posts/{postId}/comments").permitAll()
+
                 // The rest must be logged in to reach
                 .anyRequest().authenticated();
 
@@ -47,7 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers(HttpMethod.POST, "/accounts/login");
+                .antMatchers(HttpMethod.POST, "/accounts/login")
+                .antMatchers(HttpMethod.POST, "/blogs/files");
     }
 
     @Bean

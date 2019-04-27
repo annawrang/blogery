@@ -45,6 +45,9 @@ public class AccountService {
     private BCryptPasswordEncoder encoder;
 
     @Autowired
+    private BlogService blogService;
+
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
@@ -107,13 +110,12 @@ public class AccountService {
 
         Account account = accountRepository.findByAccountId(accountId).orElseThrow(NotFoundException::new);
         validateCurrentUser(currentUser, account.getAccountId());
+        blogService.deleteBlogsByAccount(accountId);
         accountRepository.delete(account);
     }
 
     public List<BlogResource> getBlogs(UUID accountId) {
-        UUID currentUser = getCurrentUserId();
-        validateCurrentUser(accountId, currentUser);
-
+        validateCurrentUser(accountId, getCurrentUserId());
         List<Blog> blogs = blogRepository.findByAccountId(accountId);
 
         return blogs.stream().map(this::convert).collect(Collectors.toList());

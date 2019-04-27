@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -40,10 +41,12 @@ public class BlogService {
     private AccountService accountService;
 
     @Autowired
+    private AmazonClient amazonClient;
+
+    @Autowired
     private Validator validator;
 
     public BlogResource createBlog(BlogResource resource) {
-
         validateResource(resource, "name");
         validateResource(resource, "description");
 
@@ -73,7 +76,7 @@ public class BlogService {
         if (!blog.getAccountId().equals(currentUser)) {
             throw new ForbiddenException("The user does not have the rights to perform this action");
         }
-
+        postRepository.deleteAllByBlogId(blogId);
         blogRepository.delete(blog);
     }
 
@@ -96,9 +99,7 @@ public class BlogService {
     }
 
     public PostResource getPost(UUID blogId, UUID postId) {
-        Post post = postRepository.findByBlogIdAndPostId(blogId, postId).orElseThrow(NotFoundException::new);
-
-        return convert(post);
+        return convert(postRepository.findByBlogIdAndPostId(blogId, postId).orElseThrow(NotFoundException::new));
     }
 
     public PostResource editPost(UUID blogId, UUID postId, PostResource resource) {
@@ -126,11 +127,15 @@ public class BlogService {
 
     public PagedResources<PostResource> getPosts(UUID blogId, Pageable pageable) {
         Page<Post> posts = postRepository.findAllByBlogId(blogId, pageable);
-
         List<PostResource> resources = posts.stream().map(this::convert).collect(Collectors.toList());
 
         return new PagedResources<>(resources, new PagedResources.PageMetadata(
                 pageable.getPageSize(), pageable.getPageNumber(), posts.getTotalElements()));
+    }
+
+    public String uploadContent(final MultipartFile file) {
+//        accountService.getCurrentUserId();
+        return amazonClient.uploadFile(file);
     }
 
     public CommentResource createComment(UUID blogId, UUID postId, CommentResource resource) {
@@ -211,5 +216,13 @@ public class BlogService {
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
+    }
+
+    public void deleteBlogsByAccount(UUID accountId) {
+        List<Blog> blogs = blogRepository.findByAccountId(accountId);
+        blogs.forEach(b -> {
+            postRepository.deleteAllByBlogId(b.getBlogId());
+            deleteBlog(b.getBlogId());
+        });
     }
 }

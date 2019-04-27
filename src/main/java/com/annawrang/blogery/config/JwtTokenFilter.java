@@ -26,7 +26,6 @@ class JwtTokenFilter extends GenericFilterBean {
 
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            System.out.println("Auth Filter - refreshToken är inte null");
             Authentication auth = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
